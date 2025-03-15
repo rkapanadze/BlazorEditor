@@ -11,7 +11,7 @@
             Html text Editor
         </div>
         <div class="card-body mb-5" style="height:200px;">
-            <TextEditorComponent @ref="textEditor"/>
+            <HtmlEditor @ref="_htmlEditor"/>
         </div>
         <div class="card-footer">
             <button class="btn btn-success" @onclick="ShowAoutPutPreview">Render</button>
@@ -24,11 +24,11 @@
 @code
 {
     private MarkupString preview;
-    private TextEditorComponent textEditor;
+    private HtmlEditor _htmlEditor;
 
     private async Task ShowAoutPutPreview()
     {
-        var editorContent = await textEditor.GetEditorHTML(); // Calling the public method
+        var editorContent = await _htmlEditor.GetEditorHTML(); // Calling the public method
         if (!string.IsNullOrWhiteSpace(editorContent))
         {
             preview = (MarkupString)editorContent;
