@@ -5,13 +5,11 @@
 <BlazoredTextEditor @ref="QuillHtml" Placeholder="Please input text">
     <ToolbarContent>
         <div style="@(ShowToolbar ? "" : "display: none;")">
-            <!-- Text Formatting Buttons -->
             <span class="ql-formats">
                 <button class="ql-bold">B</button>
                 <button class="ql-italic">I</button>
                 <button class="ql-underline">U</button>
             </span>
-            <!-- Heading Dropdown -->
             <span class="ql-formats">
                 <select class="ql-header">
                     <option value="1">H1</option>
@@ -19,11 +17,9 @@
                     <option value="3">H3</option>
                 </select>
             </span>
-            <!-- Insert Link Button -->
             <span class="ql-formats">
                 <button class="ql-link"></button>
             </span>
-            <!-- Insert Image Button -->
             <span class="ql-formats">
                 <button class="ql-image"></button>
             </span>
@@ -34,6 +30,8 @@
 @code
 {
     [Parameter] public bool ShowToolbar { get; set; } = true;
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> OnValueChanged { get; set; }
 
     private BlazoredTextEditor QuillHtml;
 
@@ -42,8 +40,15 @@
         ShowToolbar = !ShowToolbar;
     }
 
+    private async Task UpdateValue()
+    {
+        Value = await QuillHtml.GetHTML();
+        await OnValueChanged.InvokeAsync(Value);
+    }
+
     public async Task<string> GetEditorHTML()
     {
-        return await QuillHtml.GetHTML();
+        await UpdateValue();
+        return Value;
     }
 }
