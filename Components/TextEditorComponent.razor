@@ -1,0 +1,49 @@
+@using Blazored.TextEditor
+
+<button @onclick="ToggleToolbar">Toggle Toolbar</button>
+
+<BlazoredTextEditor @ref="QuillHtml" Placeholder="Please input text">
+    <ToolbarContent>
+        <div style="@(ShowToolbar ? "" : "display: none;")">
+            <!-- Text Formatting Buttons -->
+            <span class="ql-formats">
+                <button class="ql-bold">B</button>
+                <button class="ql-italic">I</button>
+                <button class="ql-underline">U</button>
+            </span>
+            <!-- Heading Dropdown -->
+            <span class="ql-formats">
+                <select class="ql-header">
+                    <option value="1">H1</option>
+                    <option value="2">H2</option>
+                    <option value="3">H3</option>
+                </select>
+            </span>
+            <!-- Insert Link Button -->
+            <span class="ql-formats">
+                <button class="ql-link"></button>
+            </span>
+            <!-- Insert Image Button -->
+            <span class="ql-formats">
+                <button class="ql-image"></button>
+            </span>
+        </div>
+    </ToolbarContent>
+</BlazoredTextEditor>
+
+@code
+{
+    [Parameter] public bool ShowToolbar { get; set; } = true;
+
+    private BlazoredTextEditor QuillHtml;
+
+    private void ToggleToolbar()
+    {
+        ShowToolbar = !ShowToolbar;
+    }
+
+    public async Task<string> GetEditorHTML()
+    {
+        return await QuillHtml.GetHTML();
+    }
+}
